@@ -1,13 +1,14 @@
+#	prints simple DMARC report stats to stdout and a detailed list of auth. domains / IPs / results to dmarc_stats.txt
+#	each e-mail marked as 'blocked' if any spamfilter didn't mark it 'pass', otherwise marked as 'allowed'
 import xml.etree.ElementTree as ET
-import operator
 
 records = []
 
 NUM_FILES = 257
-#	parses files named 000,001,..,NUM_FILES-1
+#	parses files named [000,001,..,NUM_FILES-1].xml
 for i in range(0,NUM_FILES):
 	filename = str(i//100)+str((i//10)%10)+str(i%10)
-	cur_tree = ET.parse('Takeout/'+filename+'.xml')
+	cur_tree = ET.parse(filename+'.xml')
 	root = cur_tree.getroot()
 	for record in root:
 		if record.tag == 'record': records.append(record)
